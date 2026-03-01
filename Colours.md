@@ -17,8 +17,7 @@
 - **Groß:** `#6366F1` – Indigo  
 - **Mittel-groß:** `#06B6D4` – Cyan  
 - **Mittel:** `#22C55E` – Grün  
-- **Mittel-klein:** `#EAB308` – Gelb  
-- **Klein:** `#F97316` – Orange  
+- **Mittel-klein:** `#EAB308` – Gelb
 
 → Verlauf von kühl zu warm erzeugt eine klare visuelle Hierarchie.
 
