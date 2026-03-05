@@ -1,4 +1,5 @@
 import './styles.css'; 
-import { Game } from './game';
+import { Game, Disks } from './game';
 
-const beam = new Game()
+const game = new Game();
+const disk = new Disks();
