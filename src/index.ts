@@ -7,9 +7,6 @@
     const button2 = document.getElementById('b2') as HTMLButtonElement;
     const button3 = document.getElementById('b3') as HTMLButtonElement;
 
-    const stack1 = game.disks;
-    console.log(stack1)
-
     button1.addEventListener('click', () => {
         game.acceptInput(0);
     })

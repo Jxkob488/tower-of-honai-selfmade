@@ -2,7 +2,7 @@ export class Game {
   private svg = document.getElementById('svg') as unknown as SVGSVGElement;
   private beam = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   private move = { start: -1, end: -1 };
-  private stackOfStacks:Disk[][] = [];
+  private stackOfStacks: Disk[][] = [];
 
   constructor() {
     this.beam.setAttribute('x', '0');
@@ -15,7 +15,7 @@ export class Game {
 
     for (let i = 0; i < 3; i++) {
       const pillar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      pillar.setAttribute('x', String(260 + i * 360));
+      pillar.setAttribute('x', String(250 + i * 250));
       pillar.setAttribute('y', '200');
       pillar.setAttribute('width', '20');
       pillar.setAttribute('height', '350');
@@ -24,17 +24,15 @@ export class Game {
       this.svg.appendChild(pillar);
     }
     this.createStack();
-
   }
-  private createStack(){
-    const colors = ["",'#6366F1', '#06B6D4', '#22C55E', '#EAB308'];
+  private createStack() {
+    const colors = ['', '#6366F1', '#06B6D4', '#22C55E', '#EAB308'];
     const stack = [];
     for (let i = 4; i >= 1; i--) {
-
       const disk = new Disk(i, colors[i]!);
       stack.push(disk);
     }
-    this.stackOfStacks.push(stack)
+    this.stackOfStacks.push(stack);
     this.stackOfStacks.push([]);
     this.stackOfStacks.push([]);
   }
@@ -45,7 +43,7 @@ export class Game {
     } else if (this.move.end === -1) {
       this.move.end = button;
       console.log(this.move.end);
-      this.moveDisk(this.move.start,this.move.end);
+      this.moveDisk(this.move.start, this.move.end);
       this.move.start = -1;
       this.move.end = -1;
     }
@@ -53,7 +51,7 @@ export class Game {
 
   private moveDisk(from: number, to: number) {
     console.log('Hallo');
-    const fromStack: Disk[] = this.stackOfStacks[from]!
+    const fromStack: Disk[] = this.stackOfStacks[from]!;
     const toStack: Disk[] = this.stackOfStacks[to]!;
 
     if (typeof from !== 'number' || typeof to !== 'number' || from === to || this.stackOfStacks[from]?.length === 0) {
@@ -66,7 +64,7 @@ export class Game {
       return;
     }
 
-    const disk = fromStack[fromStack.length-1]; // Peek at the top disk
+    const disk = fromStack[fromStack.length - 1]; // Peek at the top disk
     if (disk === null || disk === undefined) {
       alert('Invalid move! The disk is null or undefined.');
       return;
@@ -78,30 +76,46 @@ export class Game {
     }
 
     toStack.push(fromStack.pop()!);
+    this.calculateNewPos(from, to, disk);
     console.log(this.stackOfStacks);
+  }
+  private calculateNewPos(start: number, end: number, disk: Disk) {
+    const length = this.stackOfStacks[end]?.length;
+    const y = 550 - length! * 50;
+    const xmovement = end-start;
+    const x = xmovement*250;
+    disk.updatePos(x,y);
   }
 }
 
 class Disk {
   private svg = document.getElementById('svg') as unknown as SVGSVGElement;
-  private x: number = 270;
+  private x: number = 260;
   private y: number = 300;
   private width: number = 100;
+  private diskElement: SVGRectElement;
 
   constructor(size: number, color: string) {
-    const disk = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    this.width *= size * 0.8;
+    this.diskElement = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    this.width *= size * 0.55;
     this.x -= this.width / 2;
     this.y += 50 * size;
 
-    disk.setAttribute('x', `${this.x}`);
-    disk.setAttribute('y', `${this.y}`);
-    disk.setAttribute('width', `${this.width}`);
-    disk.setAttribute('height', '50');
-    disk.setAttribute('rx', '20');
-    disk.setAttribute('ry', '20');
-    disk.setAttribute('fill', color);
+    this.diskElement.setAttribute('x', `${this.x}`);
+    this.diskElement.setAttribute('y', `${this.y}`);
+    this.diskElement.setAttribute('width', `${this.width}`);
+    this.diskElement.setAttribute('height', '50');
+    this.diskElement.setAttribute('rx', '20');
+    this.diskElement.setAttribute('ry', '20');
+    this.diskElement.setAttribute('fill', color);
 
-    this.svg.appendChild(disk);
+    this.svg.appendChild(this.diskElement);
+  }
+  public updatePos(x: number, y: number) {
+    this.x += x;
+    this.y = y;
+
+    this.diskElement.setAttribute('x', `${this.x}`);
+    this.diskElement.setAttribute('y', `${this.y}`);
   }
 }
